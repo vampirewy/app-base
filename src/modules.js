@@ -1,6 +1,6 @@
 console.log(process.env.NODE_ENV);
 const LOCAL_IP_ADDRESS = "localhost";
-const SERVE_IP_ADDRESS = "blog.matserw.com";
+const SERVE_IP_ADDRESS = "106.54.42.57";
 export const modules = {
   "module-html": `http://${
     process.env.NODE_ENV === "development" ? LOCAL_IP_ADDRESS : SERVE_IP_ADDRESS
