@@ -26,42 +26,42 @@
 
 <script>
 export default {
-  name: "Layout",
+  name: 'Layout',
   data() {
     return {
       activeIndex: 0,
       navList: [
-        { title: "HTML", name: "module-html/list" },
-        { title: "CSS", name: "module-css/list" },
+        { title: 'HTML', name: 'module-html/list' },
+        { title: 'CSS', name: 'module-css/list' },
         // { title: "JavaScript", name: "module-js/list" },
         // { title: "TypeScript", name: "module-ts/list" },
         // { title: "Linux", name: "module-linux/list" },
         // { title: "Nginx", name: "module-nginx/list" }
-      ]
-    };
+      ],
+    }
   },
   methods: {
     onMenuClick(current, idx) {
-      this.activeIndex = idx;
+      this.activeIndex = idx
       this.$router
         .push({
-          path: `/layout/${current.name}`
+          path: `/layout/${current.name}`,
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     refresh() {
-      const linkUrl = window.location.href;
+      const linkUrl = window.location.href
       this.navList.forEach((item, index) => {
         if (linkUrl.includes(item.name)) {
-          this.activeIndex = index;
+          this.activeIndex = index
         }
-      });
-    }
+      })
+    },
   },
   mounted() {
-    this.refresh();
-  }
-};
+    this.refresh()
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -111,7 +111,7 @@ export default {
       line-height: 60px;
       padding: 0 30px;
       &::after {
-        content: "";
+        content: '';
         width: 0;
         height: 0;
         position: absolute;

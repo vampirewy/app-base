@@ -1,16 +1,16 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Layout from "./views/Layout.vue";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Layout from './views/Layout.vue'
 // import Home from "./views/Home.vue";
-import Error from "./views/Error.vue";
-import { modules } from "./modules";
+import Error from './views/Error.vue'
+import { modules } from './modules'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/",
-    redirect: "/layout"
+    path: '/',
+    redirect: '/layout',
   },
   // {
   //   path: "/home",
@@ -18,16 +18,16 @@ const routes = [
   //   component: Home,
   // },
   {
-    path: "/layout",
-    name: "Layout",
+    path: '/layout',
+    name: 'Layout',
     component: Layout,
     children: [
       {
-        path: "",
-        redirect: "module-html"
-      }
-    ]
-  }
+        path: '',
+        redirect: 'module-html',
+      },
+    ],
+  },
   // {
   //   path: "*",
   //   redirect: "/404"
@@ -38,75 +38,71 @@ const routes = [
   //     template: `<div>404</div>`
   //   }
   // }
-];
+]
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
-  routes
-});
+  routes,
+})
 
-const cachedModules = new Set();
+const cachedModules = new Set()
 
 router.beforeEach(async (to, from, next) => {
-  const [, , module] = to.path.split("/");
+  const [, , module] = to.path.split('/')
 
   if (Reflect.has(modules, module)) {
     if (!cachedModules.has(module)) {
-      const { default: application } = await window.System.import(
-        modules[module]
-      );
+      const { default: application } = await window.System.import(modules[module])
 
       if (application && application.routes && application.routes.length) {
-        const routes = router.options.routes || [];
-        const homeRoutes = routes.find(r => r.name === "Layout");
+        const routes = router.options.routes || []
+        const homeRoutes = routes.find(r => r.name === 'Layout')
         if (homeRoutes) {
-          !homeRoutes.children && (homeRoutes.children = []);
+          !homeRoutes.children && (homeRoutes.children = [])
           if (!homeRoutes.children.length) {
-            const route = application.routes[0];
+            const route = application.routes[0]
             homeRoutes.children.push({
-              path: "",
-              redirect: route.name
-            });
+              path: '',
+              redirect: route.name,
+            })
           }
-          application.routes.forEach(route =>
-            homeRoutes.children ? homeRoutes.children.push(route) : []
-          );
-          router.addRoutes([homeRoutes]);
+          application.routes.forEach(route => (homeRoutes.children ? homeRoutes.children.push(route) : []))
+          router.addRoutes([homeRoutes])
         }
       }
 
       application &&
         application.beforeEach &&
         router.beforeEach((to, from, next) => {
-          if (module === to.path.split("/")[1]) {
-            application.beforeEach(to, from, next);
+          if (module === to.path.split('/')[1]) {
+            application.beforeEach(to, from, next)
           } else {
-            next();
+            next()
           }
-        });
+        })
 
-      application && application.init && (await application.init({}));
+      application && application.init && (await application.init({}))
 
-      cachedModules.add(module);
-      next(to.path);
+      cachedModules.add(module)
+      next(to.path)
     } else {
-      next();
+      next()
     }
-    return;
+    return
   } else {
     router.addRoutes([
       {
-        path: "*",
-        redirect: "/404"
+        path: '*',
+        redirect: '/404',
       },
       {
-        path: "/404",
-        component: Error
-      }
-    ]);
+        path: '/404',
+        component: Error,
+      },
+    ])
   }
-  to.matched.length ? next() : next("/404");
-});
+  to.matched.length ? next() : next('/404')
+})
 
-export default router;
+export default router

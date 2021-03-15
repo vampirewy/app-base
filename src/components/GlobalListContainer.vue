@@ -13,24 +13,24 @@
 
 <script>
 export default {
-  name: "GlobalListContainer",
+  name: 'GlobalListContainer',
   props: {
     list: {
       type: Array,
       default: function() {
-        return [];
+        return []
       },
     },
   },
   data() {
-    return {};
+    return {}
   },
   methods: {
     toDetail(currentItem) {
-      this.$emit("toDetail", currentItem);
+      this.$emit('toDetail', currentItem)
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

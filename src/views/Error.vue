@@ -4,11 +4,11 @@
 
 <script>
 export default {
-  name: "Error",
+  name: 'Error',
   data() {
-    return {};
-  }
-};
+    return {}
+  },
+}
 </script>
 
 <style lang="scss" scoped></style>
